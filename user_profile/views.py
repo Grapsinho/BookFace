@@ -235,6 +235,8 @@ class AddFriendsAndInterests(View):
 
                 cache.set(cache_key, popular_users, timeout=2 * 24 * 60)
 
+            print(popular_users)
+
             return render(request, 'user_profile/done_profile_setup.html', {'popular_users': popular_users})
         except AuthenticationRedirectException as a:
             return redirect('logout')
