@@ -184,7 +184,7 @@ function initializeWebSocket(chatId) {
   }
 
   socketConnectionForChat = new WebSocket(
-    `ws://${location.host}/ws/chat/messages/${chatId}/`
+    `wss://${location.host}/wss/chat/messages/${chatId}/`
   );
 
   socketConnectionForChat.onmessage = function (e) {
