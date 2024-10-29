@@ -5,8 +5,11 @@ from channels.auth import AuthMiddlewareStack
 import notifications.routing
 import search.routing as search_routing
 import chatAndMessages.routing as chat_routing
+import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
+
+django.setup()
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
