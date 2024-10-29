@@ -1,9 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from .models import Chat, Message
-from users.models import User
-from asgiref.sync import sync_to_async, async_to_sync
-from channels.layers import get_channel_layer
+from asgiref.sync import sync_to_async
 import bleach
 from utils.utility import returnTimeString
 
@@ -36,9 +33,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         sender = self.scope['user']
 
         try:
-
             if delete_messageOrNot:
                 message_id = data['message_id']
+
+                from .models import Message
 
                 # First, retrieve the message
                 messageToDelete = await sync_to_async(Message.objects.get)(id=message_id)
@@ -58,7 +56,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             else:
                 content = sanitize_input(data['content'])
                 receiver_email = data['receiver']
+                
+                # Move User import inside the method to delay access
+                from users.models import User
                 receiver = await sync_to_async(User.objects.get)(email=receiver_email)
+
+                # Move Chat import inside the method to delay access
+                from .models import Chat
                 chat = await sync_to_async(Chat.create_conversation)(sender, receiver)
 
                 # Create and save the message
@@ -112,6 +116,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def create_message(self, chat, sender, receiver, content):
+        from .models import Message
         return Message.objects.create(
             chat=chat,
             sender=sender,
