@@ -5,7 +5,7 @@ function sanitizeInput(userInput) {
 }
 
 // Establish WebSocket connection
-let socket = new WebSocket(`ws://${location.host}/ws/search_friends/`);
+let socket = new WebSocket(`wss://${location.host}/wss/search_friends/`);
 
 // Get search input elements and result containers for both desktop and mobile
 const searchInputDesktop = document.getElementById("search-input__nav-desktop");
