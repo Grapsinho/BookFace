@@ -2,7 +2,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from asgiref.sync import sync_to_async
 import bleach
-from utils.utility import returnTimeString
 
 def sanitize_input(user_input):
     cleaned_input = bleach.clean(user_input, tags=['p', 'strong', 'em'], attributes={'*': ['class']})
@@ -59,6 +58,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 
                 # Move User import inside the method to delay access
                 from users.models import User
+                from utils.utility import returnTimeString
                 receiver = await sync_to_async(User.objects.get)(email=receiver_email)
 
                 # Move Chat import inside the method to delay access
