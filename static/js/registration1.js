@@ -97,7 +97,7 @@ function sanitizeInput(userInput) {
 
         // Send data via AJAX POST request
         $.ajax({
-          url: `${location.protocol}//${location.host}/auth/signup/`,
+          url: `/auth/signup/`,
           type: "POST",
           headers: {
             "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
@@ -106,7 +106,7 @@ function sanitizeInput(userInput) {
           data: JSON.stringify(data),
           success: function (response) {
             // Redirect to login page upon successful registration
-            window.location.href = `${location.protocol}//${location.host}/auth/login/`;
+            window.location.href = `/auth/login/`;
           },
           error: function (error) {
             try {
