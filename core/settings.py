@@ -20,7 +20,21 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = debug
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["bookface-5265.onrender.com", "localhost"]
+
+# ესენი არის ქროსს საიტ სკრიპტინგისთვის, დაცვისთვის
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# ყველა არა https რექვესტები გადამისამართდება httpზე
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# საიტზე შესვლა შეიძლება მოხოლოდ https
+SECURE_HSTS_SECONDS = 86400
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 
 # Application definition
@@ -52,7 +66,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     #Development
-    "debug_toolbar",
+    #"debug_toolbar",
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -60,6 +74,10 @@ AUTH_USER_MODEL = 'users.User'
 STATIC_VERSION = '2.0'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://bookface-5265.onrender.com',
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -81,6 +99,10 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # whitenoise for manage static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,7 +114,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 
     # debug-toolbar
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    #"debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -144,11 +166,13 @@ DATABASES = {
     }
 }
 
+external_redis = os.environ.get('EXTERNAL_LINK_REDIS')
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Assuming you have Redis running locally
+            "hosts": [external_redis],
         },
     },
 }
@@ -156,7 +180,7 @@ CHANNEL_LAYERS = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': external_redis,
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -207,6 +231,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_ROOT = BASE_DIR / 'static/media'
 MEDIA_URL = 'media/'
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -214,10 +239,10 @@ MEDIA_URL = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #this is for debug toolbar
-INTERNAL_IPS = [
-    '127.0.0.1',
-    'localhost'
-]
+# INTERNAL_IPS = [
+#     '127.0.0.1',
+#     'localhost'
+# ]
 
 email_backend = os.environ.get('EMAIL_BACKEND')
 email_host = os.environ.get('EMAIL_HOST')

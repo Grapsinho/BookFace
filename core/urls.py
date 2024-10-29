@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-import debug_toolbar
+#import debug_toolbar
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('secret-admin/', admin.site.urls),
 
     # auth urls
     path('auth/', include('users.urls')),
@@ -29,7 +29,7 @@ urlpatterns = [
     path('chat/', include('chatAndMessages.urls')),
 
     #for development
-    path("__debug__/", include(debug_toolbar.urls)),
+    #path("__debug__/", include(debug_toolbar.urls)),
 ]
 
 if settings.DEBUG:
