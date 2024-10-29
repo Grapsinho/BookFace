@@ -357,7 +357,7 @@ let notification_count_mobile = notification_count_mobile_element
     notification_count
   : notification_count;
 
-const ws = new WebSocket(`ws://${window.location.host}/ws/notifications/`);
+const ws = new WebSocket(`wss://${window.location.host}/wss/notifications/`);
 
 ws.onmessage = function (e) {
   try {
