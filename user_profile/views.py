@@ -233,6 +233,8 @@ class AddFriendsAndInterests(View):
                     id=request.user.pk
                 ).order_by('-total_friend_count')[:14]
 
+                print(popular_users)
+
                 cache.set(cache_key, popular_users, timeout=2 * 24 * 60)
 
             print(popular_users)
