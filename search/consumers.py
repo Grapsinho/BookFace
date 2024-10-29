@@ -1,5 +1,4 @@
 import json
-from users.models import User
 from channels.generic.websocket import WebsocketConsumer
 
 class SearchConsumer(WebsocketConsumer):
@@ -10,6 +9,7 @@ class SearchConsumer(WebsocketConsumer):
         pass
 
     def receive(self, text_data):
+        from users.models import User
         data = json.loads(text_data)
         query = data.get('query', '').strip()
         current_user_id = data.get('user_id', 1)
