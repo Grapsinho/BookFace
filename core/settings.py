@@ -20,7 +20,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = debug
 
-ALLOWED_HOSTS = ["bookface-yfk7.onrender.com", "localhost"]
+ALLOWED_HOSTS = ["bookface-u51i.onrender.com", "localhost"]
 
 # ესენი არის ქროსს საიტ სკრიპტინგისთვის, დაცვისთვის
 SECURE_BROWSER_XSS_FILTER = True
@@ -76,7 +76,7 @@ STATIC_VERSION = '2.0'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://bookface-yfk7.onrender.com',
+    'https://bookface-u51i.onrender.com',
 ]
 
 REST_FRAMEWORK = {
