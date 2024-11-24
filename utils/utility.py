@@ -134,9 +134,15 @@ def get_combined_posts(user, user_tags, friends_ids, fetched_post_ids, fetched_s
     Fetches friend-based, tag-based, and popular posts and combines them.
     """
     # Efficient comment prefetch limited to recent comments
+    limited_comments_query = (
+        Comment.objects.select_related('user')
+        .order_by('-created_at')
+        .only('id', 'user_id', 'created_at', 'content')
+    )
+    
     comments_prefetch = Prefetch(
         'comments',
-        queryset=Comment.objects.select_related('user').order_by('-created_at')[:10]
+        queryset=limited_comments_query
     )
 
     # Base post query excluding already fetched posts
