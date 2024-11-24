@@ -137,7 +137,7 @@ def get_combined_posts(user, user_tags, friends_ids, fetched_post_ids, fetched_s
     limited_comments_query = (
         Comment.objects.select_related('user')
         .order_by('-created_at')
-        .only('id', 'user_id', 'created_at', 'content')
+        .only('id', 'user_id', 'created_at', 'text')
     )
     
     comments_prefetch = Prefetch(
